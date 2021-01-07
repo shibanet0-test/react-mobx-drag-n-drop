@@ -7,7 +7,7 @@ interface StyledDragnDropContainerProps {
 
 const StyledDragnDropContainer = styled.div`
   border: 2px solid #000;
-  width: 400px;
+  width: 330px;
   height: 160px;
   margin-bottom: 20px;
   background-color: ${({ isHighlight }: StyledDragnDropContainerProps) =>
