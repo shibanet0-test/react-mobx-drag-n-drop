@@ -5,6 +5,12 @@ interface StyledDragnDropContainerProps {
   isHighlight: boolean;
 }
 
+interface DragnDropContainerProps {
+  id: number;
+  children?: React.ReactNode;
+  isHighlight: boolean;
+}
+
 const StyledDragnDropContainer = styled.div`
   border: 2px solid #000;
   width: 330px;
@@ -22,11 +28,6 @@ const StyledDragnDropContainerContent = styled.div`
   justify-content: space-evenly;
 `;
 
-interface DragnDropContainerProps {
-  id: number;
-  children?: React.ReactNode;
-  isHighlight: boolean;
-}
 function DragnDropContainer({
   id,
   children,

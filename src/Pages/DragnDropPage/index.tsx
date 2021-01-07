@@ -3,13 +3,9 @@ import DragnDropContainer from "../../Components/DragnDropGroup/DragnDropContain
 import React from "react";
 import dragnDropStore from "../../store/DragnDrop";
 import { observer } from "mobx-react";
-import styled from "styled-components";
-
-const StyledDragnDropPage = styled.div``;
-
 function DragnDropPage() {
   return (
-    <StyledDragnDropPage>
+    <div>
       {dragnDropStore.containers.map((container) => (
         <DragnDropContainer
           id={container.id}
@@ -37,7 +33,7 @@ function DragnDropPage() {
           ))}
         </DragnDropContainer>
       ))}
-    </StyledDragnDropPage>
+    </div>
   );
 }
 

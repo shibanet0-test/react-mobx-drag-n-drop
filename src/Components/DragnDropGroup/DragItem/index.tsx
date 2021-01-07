@@ -1,12 +1,26 @@
 import React, { useEffect, useRef } from "react";
 
-import { DragItemColor } from "../../../store/DragnDrop";
+import { DragItemColor } from "../../../store/DragnDrop/store";
 import DragnDropUtils from "./dragnDropUtils";
 import styled from "styled-components";
 
 interface StyledDragItemProps {
   type: DragItemColor;
   draggable?: boolean;
+}
+
+interface DragItemProps {
+  name: string;
+  multiplier: number;
+  type: DragItemColor;
+  text: string;
+  onDragStart: (name: string) => void;
+  onDragEnd: (x: number, y: number) => void;
+}
+
+interface PhantomDragItemProps {
+  type: DragItemColor;
+  text: string;
 }
 
 const StyledDragItem = styled.div`
@@ -34,20 +48,6 @@ const StyledDragItemMultiplier = styled(StyledDragItemText)`
   top: 0;
   line-height: 20px;
 `;
-
-interface DragItemProps {
-  name: string;
-  multiplier: number;
-  type: DragItemColor;
-  text: string;
-  onDragStart: (name: string) => void;
-  onDragEnd: (x: number, y: number) => void;
-}
-
-interface PhantomDragItemProps {
-  type: DragItemColor;
-  text: string;
-}
 
 const StyledPhantomDragItem = styled(StyledDragItem)`
   position: absolute;

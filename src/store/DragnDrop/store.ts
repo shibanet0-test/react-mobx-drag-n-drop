@@ -1,35 +1,7 @@
-import { autorun, makeAutoObservable, runInAction } from "mobx";
-
 import { computedFn } from "mobx-utils";
-
+import { findContainerIdFromCoords } from "./utils";
+import { makeAutoObservable } from "mobx";
 export type DragItemColor = "blue" | "green";
-
-const isNodeTypeDragnDropContainer = (
-  node: Element | HTMLElement | null | undefined
-) =>
-  node?.hasAttribute("data-type") &&
-  node.getAttribute("data-type") === "Drag'n'Drop_container";
-
-function findContainerIdFromCoords(x: number, y: number): number | null {
-  let node: Element | undefined | null | HTMLElement = null;
-  node = document.elementFromPoint(x, y);
-  if (!node) {
-    return null;
-  }
-
-  for (let i = 0; i < 5; ++i) {
-    if (node && isNodeTypeDragnDropContainer(node)) {
-      const id = node.getAttribute("data-id");
-      if (id) {
-        return Number(id);
-      }
-    }
-    node = node?.parentElement;
-  }
-
-  return null;
-}
-
 interface Item {
   multiplier: number;
   name: string;
@@ -50,7 +22,7 @@ interface DraggableItemInfo {
   allowedToMoveIn: number[];
 }
 
-class DragnDrop {
+export default class DragnDrop {
   draggableFromContainerItemInfo: DraggableItemInfo | null = null;
 
   items: Item[] = [
@@ -169,56 +141,3 @@ class DragnDrop {
     return this.items.filter((item) => item.containerId === containerId);
   });
 }
-
-export const dragnDropStore = new DragnDrop();
-
-autorun(() => {
-  if (dragnDropStore.draggableFromContainerItemInfo !== null) {
-    const findedContainer = dragnDropStore.containers.find(
-      ({ id }) =>
-        id === dragnDropStore.draggableFromContainerItemInfo?.containerId
-    );
-
-    let allowedIds: number[] = [];
-
-    if (findedContainer) {
-      allowedIds = [...findedContainer.allowedToMoveIn];
-    }
-
-    dragnDropStore.containers.forEach((container) =>
-      runInAction(() => {
-        let isHighlight = false;
-        if (allowedIds.length && allowedIds.includes(container.id)) {
-          isHighlight = true;
-          if (dragnDropStore.containers[container.id]) {
-            dragnDropStore.containers[container.id].isHighlight = true;
-          }
-        }
-        const findedContainer = dragnDropStore.containers.find(
-          ({ id }) => id === container.id
-        );
-        if (findedContainer) {
-          findedContainer.isHighlight = isHighlight;
-        }
-      })
-    );
-  } else {
-    dragnDropStore.containers.forEach((container) =>
-      runInAction(() => (container.isHighlight = true))
-    );
-  }
-});
-
-autorun(() => {
-  dragnDropStore.items.map((item) =>
-    runInAction(() => {
-      if (item.multiplier <= 0) {
-        item.isDraggable = false;
-      } else {
-        item.isDraggable = true;
-      }
-    })
-  );
-});
-
-export default dragnDropStore;

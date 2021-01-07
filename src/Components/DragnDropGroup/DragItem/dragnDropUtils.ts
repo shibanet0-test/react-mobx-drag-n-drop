@@ -11,7 +11,7 @@ const getTargetCoordsFromTouchEvent = (e: TouchEvent | null) => {
   return coords;
 };
 
-class DragnDropUtils {
+class DragnDropController {
   private ref: React.RefObject<HTMLDivElement>;
   private refPhantom: React.RefObject<HTMLDivElement>;
 
@@ -141,4 +141,4 @@ class DragnDropUtils {
   }
 }
 
-export default DragnDropUtils;
+export default DragnDropController;
